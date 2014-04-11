@@ -21,6 +21,7 @@
 		EDB2A64218F72DF500C56DD2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDB2A62418F72DF500C56DD2 /* UIKit.framework */; };
 		EDB2A64A18F72DF500C56DD2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EDB2A64818F72DF500C56DD2 /* InfoPlist.strings */; };
 		EDB2A64C18F72DF500C56DD2 /* NoSdkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EDB2A64B18F72DF500C56DD2 /* NoSdkTests.m */; };
+		EDB2A65618F72E1300C56DD2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDB2A65518F72E1300C56DD2 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		EDB2A64718F72DF500C56DD2 /* NoSdkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NoSdkTests-Info.plist"; sourceTree = "<group>"; };
 		EDB2A64918F72DF500C56DD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EDB2A64B18F72DF500C56DD2 /* NoSdkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoSdkTests.m; sourceTree = "<group>"; };
+		EDB2A65518F72E1300C56DD2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDB2A65618F72E1300C56DD2 /* CoreLocation.framework in Frameworks */,
 				EDB2A62318F72DF500C56DD2 /* CoreGraphics.framework in Frameworks */,
 				EDB2A62518F72DF500C56DD2 /* UIKit.framework in Frameworks */,
 				EDB2A62118F72DF500C56DD2 /* Foundation.framework in Frameworks */,
@@ -101,6 +104,7 @@
 		EDB2A61F18F72DF500C56DD2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EDB2A65518F72E1300C56DD2 /* CoreLocation.framework */,
 				EDB2A62018F72DF500C56DD2 /* Foundation.framework */,
 				EDB2A62218F72DF500C56DD2 /* CoreGraphics.framework */,
 				EDB2A62418F72DF500C56DD2 /* UIKit.framework */,
@@ -199,6 +203,13 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Don Browning";
 				TargetAttributes = {
+					EDB2A61C18F72DF500C56DD2 = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					EDB2A63D18F72DF500C56DD2 = {
 						TestTargetID = EDB2A61C18F72DF500C56DD2;
 					};
