@@ -40,9 +40,12 @@
                                     <action selector="exitButtonPress:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="xMp-G5-aAd"/>
                                 </connections>
                             </button>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="byf-EP-FFx">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="byf-EP-FFx">
                                 <rect key="frame" x="193" y="490" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="stealthSwitchValueChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="wjA-nw-1I4"/>
+                                </connections>
                             </switch>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Stealth Mode" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDT-Rq-Vv9">
                                 <rect key="frame" x="78" y="495" width="107" height="21"/>
@@ -89,6 +92,7 @@
                         <outlet property="exitButton" destination="aco-Nz-3eQ" id="o79-OS-mYn"/>
                         <outlet property="locationContainer" destination="5pz-AD-7Pc" id="b2S-Cp-VaC"/>
                         <outlet property="locationTextField" destination="8RX-Bj-nRI" id="KMI-1t-eGH"/>
+                        <outlet property="stealthModeSwitch" destination="byf-EP-FFx" id="7Nh-wG-fWq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

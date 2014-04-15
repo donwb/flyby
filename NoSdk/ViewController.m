@@ -12,6 +12,8 @@
 @interface ViewController () <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSUUID *estimoteBeacon;
+@property (nonatomic, strong) CLBeaconRegion *region;
 
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
@@ -19,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UITextField *locationTextField;
 @property (weak, nonatomic) IBOutlet UIView *locationContainer;
+@property (weak, nonatomic) IBOutlet UISwitch *stealthModeSwitch;
 
 @property CGRect initialAvatarFrame;
 
@@ -28,6 +31,11 @@
 
 CLLocationManager *locationManager;
 
+typedef NS_ENUM(NSInteger, UIEnabledState) {
+    UIInside,
+    UIOutside,
+    UIDisabled
+};
 
 - (void)viewDidLoad
 {
@@ -43,18 +51,31 @@ CLLocationManager *locationManager;
     self.locationManager = [[CLLocationManager alloc]init];
     self.locationManager.delegate = self;
     
-    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"];
-    CLBeaconRegion *region = [[CLBeaconRegion alloc] initWithProximityUUID:uuid identifier:@"com.donwb.beacon.region"];
-    region.notifyEntryStateOnDisplay = YES;
-    region.notifyOnEntry = YES;
-    region.notifyOnExit = YES;
+    self.estimoteBeacon = [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"];
+    self.region = [[CLBeaconRegion alloc] initWithProximityUUID:self.estimoteBeacon identifier:@"com.donwb.beacon.region"];
     
-    [self.locationManager startMonitoringForRegion:region];
-    [self.locationManager requestStateForRegion:region];
+    [self toggleBeaconState:YES];
     
 }
 
 #pragma mark BLE Stuff
+
+-(void)toggleBeaconState:(BOOL)enabled {
+    
+    
+    self.region.notifyEntryStateOnDisplay = enabled;
+    self.region.notifyOnEntry = enabled;
+    self.region.notifyOnExit = enabled;
+    
+    if(enabled) {
+        [self.locationManager startMonitoringForRegion:self.region];
+        [self.locationManager requestStateForRegion:self.region];
+    } else {
+        [self.locationManager stopMonitoringForRegion:self.region];
+        [self.locationManager stopMonitoringForRegion:self.region];
+    }
+    
+}
 
 -(void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region {
     
@@ -110,7 +131,7 @@ CLLocationManager *locationManager;
 }
 */
 
--(void) inside {
+-(void)inside {
     //self.view.backgroundColor = [UIColor greenColor];
     UILocalNotification *notify = [UILocalNotification new];
     notify.alertBody = @"Welcome!";
@@ -129,12 +150,12 @@ CLLocationManager *locationManager;
                          CGRect newFrame = self.avatarImageView.frame;
                          newFrame.size.width = 150;
                          newFrame.size.height = 150;
-                         newFrame.origin.x = self.avatarImageView.frame.origin.x - 20.0;
+                         newFrame.origin.x = self.avatarImageView.frame.origin.x - 10.0;
                          
                          [self.avatarImageView setFrame:newFrame];
                          
                          
-                         [self changeUIColor:true];
+                         [self changeUIColor:UIInside];
                      }
                      completion:^ (BOOL finished){
                          NSLog(@"done!");
@@ -143,7 +164,7 @@ CLLocationManager *locationManager;
 
 }
 
--(void) outside {
+-(void)outside {
     
     UILocalNotification *notify = [UILocalNotification new];
     notify.alertBody = @"Later!";
@@ -158,7 +179,7 @@ CLLocationManager *locationManager;
                          self.locationContainer.alpha = 1.0;
                          [self.avatarImageView setFrame:self.initialAvatarFrame];
                          
-                         [self changeUIColor:false];
+                         [self changeUIColor:UIOutside];
                      }
                      completion:^ (BOOL finished){
                          NSLog(@"done!");
@@ -168,11 +189,21 @@ CLLocationManager *locationManager;
 
 }
 
+-(void)disabled {
+    [self toggleBeaconState:NO];
+    [self changeUIColor:UIDisabled];
+}
+
+-(void)enabled {
+    [self toggleBeaconState:YES];
+}
+
 #pragma mark UI Goop
 
 - (void)roundAvatar:(CGFloat) avatarSize
 {
-    self.avatarImageView.layer.cornerRadius = avatarSize/2;
+    //self.avatarImageView.layer.cornerRadius = avatarSize/2;
+    self.avatarImageView.layer.cornerRadius = 10.0;
     self.avatarImageView.layer.borderWidth = 2.0f;
     self.avatarImageView.clipsToBounds = YES;
 }
@@ -184,20 +215,47 @@ CLLocationManager *locationManager;
     NSLog(@"here");
 }
 
--(void)changeUIColor:(BOOL)inside {
-    if(inside) {
-        self.view.backgroundColor = [UIColor colorWithRed:0.792 green:0.835 blue:0.706 alpha:1];
-        self.avatarImageView.layer.borderColor = [UIColor whiteColor].CGColor;
-        self.locationContainer.backgroundColor = [UIColor colorWithRed:0.792 green:0.835 blue:0.706 alpha:1];
-    } else {
-        self.view.backgroundColor = [UIColor colorWithRed:0.918 green:0.659 blue:0.663 alpha:1];
-        self.locationContainer.backgroundColor = [UIColor colorWithRed:0.918 green:0.659 blue:0.663 alpha:1];
+-(void)changeUIColor:(UIEnabledState)uiState {
+    switch (uiState) {
+        case UIInside:
+            self.view.backgroundColor = [UIColor colorWithRed:0.792 green:0.835 blue:0.706 alpha:1];
+            self.avatarImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+            self.locationContainer.backgroundColor = [UIColor colorWithRed:0.792 green:0.835 blue:0.706 alpha:1];
+            
+            break;
+        case UIOutside:
+            self.view.backgroundColor = [UIColor colorWithRed:0.918 green:0.659 blue:0.663 alpha:1];
+            self.locationContainer.backgroundColor = [UIColor colorWithRed:0.918 green:0.659 blue:0.663 alpha:1];
+            self.avatarImageView.layer.borderColor = [UIColor colorWithRed:0.671 green:0.875 blue:0.973 alpha:1].CGColor;
+            
+            break;
+        case UIDisabled:
+            self.view.backgroundColor = [UIColor colorWithRed:0.769 green:0.769 blue:0.769 alpha:1];
+            self.locationContainer.backgroundColor = [UIColor colorWithRed:0.769 green:0.769 blue:0.769 alpha:1];
+            
+            self.avatarImageView.layer.borderColor = [UIColor colorWithRed:0.671 green:0.875 blue:0.973 alpha:1].CGColor;
+            
+            
+            break;
+        default:
+            break;
+    }
+    if(uiState == UIInside) {
         
-        self.avatarImageView.layer.borderColor = [UIColor colorWithRed:0.671 green:0.875 blue:0.973 alpha:1].CGColor;
+    } else {
+        
 
     }
 }
 
+- (IBAction)stealthSwitchValueChanged:(id)sender {
+    if(self.stealthModeSwitch.isOn){
+        [self disabled];
+    } else {
+        [self enabled];
+    }
+    
+}
 
 
 #pragma mark test buttons
@@ -211,6 +269,7 @@ CLLocationManager *locationManager;
     [self outside];
     
 }
+
 
 - (void)didReceiveMemoryWarning
 {
