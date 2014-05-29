@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
     
     
     // outside until proven inside
-    [self outside];
+    //[self outside];
     
     self.locationManager = [[CLLocationManager alloc]init];
     self.locationManager.delegate = self;
@@ -64,6 +64,13 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
     _serviceProxy = [[ServiceProxy alloc]initWithUser:@"donwb"];
     _serviceProxy.delegate = self;
     
+    // Find out users current state, so the UI can be set
+    BOOL currentlyInside = [_serviceProxy getStatus];
+    if (currentlyInside) {
+        [self inside:YES];
+    } else {
+        [self outside:YES];
+    }
                      
 }
 
@@ -96,7 +103,7 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
         CLBeaconRegion *beaconRegion = (CLBeaconRegion *) region;
         [self.locationManager startRangingBeaconsInRegion:beaconRegion];
         
-        [self inside];
+        [self inside:NO];
     }
     
 }
@@ -112,7 +119,7 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
             //[self.locationManager startRangingBeaconsInRegion:beaconRegion];
             //NSLog(@"Starting to range beacons");
             
-            [self inside];
+            [self inside:NO];
         }
     }
 }
@@ -126,7 +133,7 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
             
             //[self.locationManager stopRangingBeaconsInRegion:beaconRegion];
             
-            [self outside];
+            [self outside:NO];
         }
     }
 }
@@ -140,7 +147,7 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
 }
 */
 
--(void)inside {
+-(void)inside:(BOOL) omitServiceCall {
     //self.view.backgroundColor = [UIColor greenColor];
     UILocalNotification *notify = [UILocalNotification new];
     notify.alertBody = @"Welcome!";
@@ -170,13 +177,13 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
                          NSLog(@"done!");
                          [self roundAvatar:150];
                      }];
-    
-    [_serviceProxy arrive];
-    
+    if (!omitServiceCall){
+        [_serviceProxy arrive];
+    }
 
 }
 
--(void)outside {
+-(void)outside:(BOOL) omitServiceCall {
     
     UILocalNotification *notify = [UILocalNotification new];
     notify.alertBody = @"Later!";
@@ -198,7 +205,9 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
                          [self roundAvatar:100.0];
                      }];
     
-    [_serviceProxy leave];
+    if (!omitServiceCall) {
+        [_serviceProxy leave];
+    }
     
 
 }
@@ -276,13 +285,13 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
 
 - (IBAction)buttonPress:(id)sender {
     [self.statusLabel setText:@"....."];
-    [self inside];
+    [self inside:NO];
 }
 
 
 - (IBAction)exitButtonPress:(id)sender {
     [self.statusLabel setText:@"....."];
-    [self outside];
+    [self outside:NO];
     
 }
 

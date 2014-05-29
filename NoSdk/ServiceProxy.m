@@ -28,7 +28,7 @@ NSString *_baseURL;
 }
 
 - (BOOL)getStatus{
-    return YES;
+    return NO;
 }
 
 - (void)invokeURLFor:(NSString *)route{
