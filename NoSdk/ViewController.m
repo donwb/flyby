@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 #import <CoreLocation/CoreLocation.h>
+#import "ServiceProxy.h"
+
 
 @interface ViewController () <CLLocationManagerDelegate>
 
@@ -17,6 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UITextField *locationTextField;
@@ -30,6 +33,7 @@
 @implementation ViewController
 
 CLLocationManager *locationManager;
+ServiceProxy *_serviceProxy;
 
 typedef NS_ENUM(NSInteger, UIEnabledState) {
     UIInside,
@@ -55,7 +59,12 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
     self.region = [[CLBeaconRegion alloc] initWithProximityUUID:self.estimoteBeacon identifier:@"com.donwb.beacon.region"];
     
     [self toggleBeaconState:YES];
+
     
+    _serviceProxy = [[ServiceProxy alloc]initWithUser:@"donwb"];
+    _serviceProxy.delegate = self;
+    
+                     
 }
 
 #pragma mark BLE Stuff
@@ -161,6 +170,9 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
                          NSLog(@"done!");
                          [self roundAvatar:150];
                      }];
+    
+    [_serviceProxy arrive];
+    
 
 }
 
@@ -185,6 +197,8 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
                          NSLog(@"done!");
                          [self roundAvatar:100.0];
                      }];
+    
+    [_serviceProxy leave];
     
 
 }
@@ -261,11 +275,13 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
 #pragma mark test buttons
 
 - (IBAction)buttonPress:(id)sender {
+    [self.statusLabel setText:@"....."];
     [self inside];
 }
 
 
 - (IBAction)exitButtonPress:(id)sender {
+    [self.statusLabel setText:@"....."];
     [self outside];
     
 }
@@ -277,5 +293,9 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
     // Dispose of any resources that can be recreated.
 }
 
+- (void) recievedServerResponse:(NSString *) response {
+    NSLog(@"Got response from server: %@", response);
+    [self.statusLabel setText:[@"Response: " stringByAppendingString:response]];
+}
 
 @end

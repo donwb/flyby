@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ServiceProxy.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <ServiceProxyDelegate> {
+    
+}
 
 @end
