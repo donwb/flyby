@@ -28,6 +28,10 @@ NSString *_baseURL;
 }
 
 - (BOOL)getStatus{
+    NSString *route = [@"status/" stringByAppendingString:self.User];
+    
+    [self invokeURLFor:route];
+    
     return NO;
 }
 
@@ -40,21 +44,26 @@ NSString *_baseURL;
     NSURL *jsonURL = [NSURL URLWithString:url];
     NSURLRequest *request = [NSURLRequest requestWithURL:jsonURL];
     
-    __weak id weakSelf = self;
-    
-    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         
         if (data) {
             NSLog(@"Got data");
             id temp = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             NSDictionary *result = temp;
-            NSString *status = [result objectForKey:@"status"];
+            
             
 
+            NSString *invokedURL = [response.URL absoluteString];
+            BOOL isStatusCall = [invokedURL rangeOfString:@"status"].location != NSNotFound;
+            if (isStatusCall) {
+                NSString *status = result[@"user"][@"status"];
+                NSLog(@"Status is: %@", status);
+                [self.delegate currentStatus:[status isEqualToString:@"in"]];
+            }
             
-            NSLog(@"Response: %@", status);
-            [self.delegate recievedServerResponse:status];
+            //NSLog(@"Response: %@", status);
+            
+            [self.delegate recievedServerResponse:result];
             
         }
         

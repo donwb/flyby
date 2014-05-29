@@ -65,12 +65,8 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
     _serviceProxy.delegate = self;
     
     // Find out users current state, so the UI can be set
-    BOOL currentlyInside = [_serviceProxy getStatus];
-    if (currentlyInside) {
-        [self inside:YES];
-    } else {
-        [self outside:YES];
-    }
+    [_serviceProxy getStatus];
+
                      
 }
 
@@ -302,9 +298,21 @@ typedef NS_ENUM(NSInteger, UIEnabledState) {
     // Dispose of any resources that can be recreated.
 }
 
-- (void) recievedServerResponse:(NSString *) response {
-    NSLog(@"Got response from server: %@", response);
-    [self.statusLabel setText:[@"Response: " stringByAppendingString:response]];
+- (void) recievedServerResponse:(NSDictionary *) response {
+    NSString *result = [response objectForKey:@"status"];
+    
+    NSLog(@"Got response from server: %@", result);
+    if (result != nil){
+        [self.statusLabel setText:[@"Response: " stringByAppendingString:result]];
+    }
+}
+
+- (void)currentStatus:(BOOL)status{
+    if (status) {
+        [self inside:NO];
+    } else {
+        [self outside:NO];
+    }
 }
 
 @end

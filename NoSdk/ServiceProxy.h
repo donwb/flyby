@@ -12,7 +12,9 @@
 @protocol ServiceProxyDelegate <NSObject>
 
 @required
-- (void) recievedServerResponse: (NSString *) response;
+- (void) currentStatus: (BOOL) status;
+@optional
+- (void) recievedServerResponse: (NSDictionary *) response;
 
 @end
 
