@@ -9,7 +9,7 @@
 #ifndef NoSdk_constants_h
 #define NoSdk_constants_h
 
-#define RUN_LOCAL
+//#define RUN_LOCAL
 
 #ifdef RUN_LOCAL
 #define BASE_URL @"http://localhost:3000/"
