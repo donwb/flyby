@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>88D0CD5A-5994-45FC-8B58-10B9AFEAC09A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>NoSdk</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B667E79B-3D5E-49BD-A018-FC2A65AEDCCD</key>
+		<string>https://github.com/donwb/flyby.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>NoSdk.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B667E79B-3D5E-49BD-A018-FC2A65AEDCCD</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/donwb/flyby.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B667E79B-3D5E-49BD-A018-FC2A65AEDCCD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B667E79B-3D5E-49BD-A018-FC2A65AEDCCD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>flyby</string>
+		</dict>
+	</array>
+</dict>
+</plist>
